@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pastry Pallet</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- ===== TOAST NOTIFICATION ===== -->
+<div id="toast" class="toast"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo" onclick="showPage('home')">The Pastry <span>Pallet</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('menu')">Menu</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li id="navDashLink" style="display:none"><a href="#" onclick="showPage('dashboard')">My Orders</a></li>
+      <li id="navAdminLink" style="display:none"><a href="#" onclick="showPage('admin')">Admin</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+      <button class="cart-btn" onclick="showPage('cart')">
+        🛒 <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <div id="navAuth">
+        <button class="btn-outline" onclick="showPage('login')">Login</button>
+        <button class="btn-primary" onclick="showPage('signup')">Sign Up</button>
+      </div>
+      <div id="navUser" style="display:none">
+        <span class="user-chip" id="userChip"></span>
+        <button class="btn-outline" onclick="logout()">Logout</button>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== PAGES ===== -->
+<main id="app">
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-tag">Handcrafted since 2021</p>
+      <h1>Every bite is<br>a little <em>art.</em></h1>
+      <p class="hero-sub">Fresh-baked pastries, cakes, and breads made with love and the finest ingredients — delivered to your door.</p>
+      <div class="hero-btns">
+        <button class="btn-primary lg" onclick="showPage('menu')">Order Now</button>
+        <button class="btn-outline lg" onclick="showPage('about')">Our Story</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-ring"></div>
+     <div  class="hero-card float-anim" style="height: 300px; width: 300px;">
+        <img src="logo.jpeg" alt="the pastry pallet" style="height: 250px; width: 250px; border-radius: 350px;">
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-bar">
+    <div class="marquee-inner">
+      <span>Croissants <b>✦</b></span><span>Custom Cakes <b>✦</b></span><span>Sourdough <b>✦</b></span><span>Eclairs <b>✦</b></span><span>Tarts <b>✦</b></span><span>Pastries <b>✦</b></span><span>Celebration Cakes <b>✦</b></span><span>Artisan Breads <b>✦</b></span>
+      <span>Croissants <b>✦</b></span><span>Custom Cakes <b>✦</b></span><span>Sourdough <b>✦</b></span><span>Eclirs <b>✦</b></span><span>Tarts <b>✦</b></span><span>Pastries <b>✦</b></span><span>Celebration Cakes <b>✦</b></span><span>Artisan Breads <b>✦</b></span>
+    </div>
+  </div>
+
+  <section class="features-strip">
+    <div class="feature"><span>🚚</span><div><strong>Free Delivery</strong><p>On orders above Rs 2,000</p></div></div>
+    <div class="feature"><span>⏰</span><div><strong>Fresh Daily</strong><p>Baked from 4am every morning</p></div></div>
+    <div class="feature"><span>🎂</span><div><strong>Custom Orders</strong><p>72hr notice, any occasion</p></div></div>
+    <div class="feature"><span>♻️</span><div><strong>Eco Packaging</strong><p>100% compostable boxes</p></div></div>
+  </section>
+
+  <section class="home-menu-preview">
+    <div class="sec-head">
+      <p class="sec-tag">Featured</p>
+      <h2>Today's <em>highlights</em></h2>
+    </div>
+    <div class="cards-grid" id="homeFeatured"></div>
+    <div style="text-align:center;margin-top:2rem">
+      <button class="btn-primary" onclick="showPage('menu')">View Full Menu</button>
+    </div>
+  </section>
+
+  <section class="testimonials-sec">
+    <div class="sec-head">
+      <p class="sec-tag">Reviews</p>
+      <h2>Loved by <em>Islamabad</em></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"The almond croissant changed my life. I drive across the city for it every Saturday."</p><div class="reviewer"><div class="av">🧕</div><div><strong>Zara Mirza</strong><span>Regular since 2022</span></div></div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"They made our wedding cake exactly as I'd envisioned five tiers of rose and pistachio perfection."</p><div class="reviewer"><div class="av">👰</div><div><strong>Sana & Bilal Ahmed</strong><span>October 2024</span></div></div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"The sourdough is genuinely the best I've had outside of Paris. Absolute artistry in loaf form."</p><div class="reviewer"><div class="av">👨</div><div><strong>Omar Siddiqui</strong><span>Food blogger</span></div></div></div>
+    </div>
+  </section>
+</div>
+<!-- MENU PAGE -->
+<div id="page-menu" class="page">
+  <div class="page-header">
+    <h1>Our <em>Menu</em></h1>
+    <p>Everything baked fresh each morning. Filter, search and add to your order.</p>
+  </div>
+  <div class="menu-controls">
+    <div class="search-wrap">
+      <input type="text" id="menuSearch" placeholder="Search menu..." oninput="filterMenu()" class="search-input">
+      <span class="search-icon">🔍︎</span>
+    </div>
+    <div class="filter-tabs" id="menuTabs">
+      <button class="tab active" onclick="setTab('all',this)">All</button>
+      <button class="tab" onclick="setTab('pastries',this)">Pastries</button>
+      <button class="tab" onclick="setTab('cakes',this)">Cakes</button>
+      <button class="tab" onclick="setTab('breads',this)">Breads</button>
+      <button class="tab" onclick="setTab('drinks',this)">Drinks</button>
+    </div>
+  </div>
+  <div class="cards-grid" id="menuGrid"></div>
+  <div id="noResults" style="display:none;text-align:center;padding:3rem;color:var(--text-light)">No items found. Try a different search.</div>
+</div>
+
+<!-- CART PAGE -->
+<div id="page-cart" class="page">
+  <div class="page-header">
+    <h1>Your <em>Cart</em></h1>
+  </div>
+  <div class="cart-layout">
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-summary" id="cartSummary"></div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="page-about" class="page">
+  <div class="page-header">
+    <h1>About <em>Us</em></h1>
+    <p>The people behind every perfect pastry.</p>
+  </div>
+  <section class="story-sec">
+    <div class="story-visual">
+      <div class="story-img"> <img src="areeba.jpeg" alt="areeba" style="width: 300px;"></div>
+      <div class="story-badge"><strong>5+</strong><span>Years Baking</span></div>
+    </div>
+    <div class="story-text">
+      <p class="sec-tag">Our Story</p>
+      <h2>Baked with <em>intention</em></h2>
+      <p>The Pastry Palette began in a small Islamabad kitchen in 2021, when founder Areeba Amir started baking croissants for her neighbours on Sunday mornings. Word spread as butter and flour tend to do.</p>
+      <p>Today we're a beloved institution, but we've never lost sight of what matters: slow processes, honest ingredients and pastry that makes you close your eyes for a moment.</p>
+      <div class="story-stats">
+        <div class="stat"><strong>5+</strong><span>Items baked daily</span></div>
+        <div class="stat"><strong>2</strong><span>Artisan bakers</span></div>
+        <div class="stat"><strong>6am</strong><span>When we start</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team-sec">
+    <div class="sec-head">
+      <p class="sec-tag">Our Team</p>
+      <h2>Meet the <em>bakers</em></h2>
+    </div>
+    <div class="team-grid" id="teamGrid"></div>
+  </section>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2>Welcome <em>back</em></h2>
+      <p class="auth-sub">Sign in to manage your orders</p>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email or Username</label>
+          <input type="text" id="loginIdentifier" placeholder="you@email.com" required>
+          <span class="field-error" id="loginIdentifierErr"></span>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+            <button type="button" class="pw-toggle" onclick="togglePw('loginPassword',this)">👁</button>
+          </div>
+          <span class="field-error" id="loginPasswordErr"></span>
+        </div>
+        <div class="form-error" id="loginErr"></div>
+        <button type="submit" class="btn-primary full">Login</button>
+      </form>
+      <p class="auth-switch">Don't have an account? <a href="#" onclick="showPage('signup')">Sign Up</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNUP PAGE -->
+<div id="page-signup" class="page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2>Create <em>Account</em></h2>
+      <p class="auth-sub">Join The Pastry Palette family</p>
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="signupUsername" placeholder="yourname" required>
+            <span class="field-error" id="signupUsernameErr"></span>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="you@email.com" required>
+            <span class="field-error" id="signupEmailErr"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="signupPassword" placeholder="Min 8 characters" required>
+            <button type="button" class="pw-toggle" onclick="togglePw('signupPassword',this)">👁</button>
+          </div>
+          <span class="field-error" id="signupPasswordErr"></span>
+          <div class="pw-strength" id="pwStrength"></div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="signupConfirm" placeholder="Repeat password" required>
+            <button type="button" class="pw-toggle" onclick="togglePw('signupConfirm',this)">👁</button>
+          </div>
+          <span class="field-error" id="signupConfirmErr"></span>
+        </div>
+        <div class="form-error" id="signupErr"></div>
+        <button type="submit" class="btn-primary full">Create Account</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="#" onclick="showPage('login')">Login</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div id="page-dashboard" class="page">
+  <div class="page-header">
+    <h1>My <em>Orders</em></h1>
+    <p>Track and manage all your orders below.</p>
+  </div>
+  <div class="dash-controls">
+    <input type="text" id="orderSearch" placeholder="Search orders..." oninput="filterOrders()" class="search-input">
+    <div class="filter-tabs">
+      <button class="tab active" onclick="setOrderFilter('all',this)">All</button>
+      <button class="tab" onclick="setOrderFilter('pending',this)">Pending</button>
+      <button class="tab" onclick="setOrderFilter('confirmed',this)">Confirmed</button>
+      <button class="tab" onclick="setOrderFilter('delivered',this)">Delivered</button>
+    </div>
+  </div>
+  <div id="ordersList"></div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="page-admin" class="page">
+  <div class="page-header">
+    <h1>Admin <em>Panel</em></h1>
+    <p>Manage all users and orders.</p>
+  </div>
+  <div class="admin-tabs">
+    <button class="tab active" onclick="setAdminTab('orders',this)">All Orders</button>
+    <button class="tab" onclick="setAdminTab('users',this)">Users</button>
+  </div>
+  <div id="adminContent"></div>
+</div>
+
+<!-- CHECKOUT SUCCESS -->
+<div id="page-success" class="page">
+  <div class="success-wrap">
+    <div class="success-anim">✅</div>
+    <h2>Order Placed!</h2>
+    <p>Thank you for your order. We'll start baking right away!</p>
+    <p class="order-ref" id="orderRef"></p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem">
+      <button class="btn-primary" onclick="showPage('dashboard')">Track Order</button>
+      <button class="btn-outline" onclick="showPage('menu')">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ===== MODAL ===== -->
+<div id="modal" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+ <div id="confirmDialog" class="modal-overlay">
+  <div class="modal-box confirm-box">
+    <h3 id="confirmTitle">Are you sure?</h3>
+    <p id="confirmMsg"></p>
+    <div class="confirm-btns">
+      <button class="btn-outline" onclick="cancelConfirm()">Cancel</button>
+      <button class="btn-danger" id="confirmOk">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo">The Pastry <span>Pallet</span></span>
+      <p>Baking beauty into every bite since 2021. Find us in Islamabad.</p>
+    </div>
+    <div class="footer-col"><h4>Navigate</h4><ul><li><a href="#" onclick="showPage('home')">Home</a></li><li><a href="#" onclick="showPage('menu')">Menu</a></li><li><a href="#" onclick="showPage('about')">About</a></li></ul></div>
+    <div class="footer-col"><h4>Visit</h4><ul><li>Royal City, Islamabad</li><li>Mon-Sat: 7am-8pm</li><li>+92 31-11111111</li></ul></div>
+    <div class="footer-col"><h4>Connect</h4><ul><li>Instagram</li><li>Facebook</li><li>pastrypalette.pk</li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 The Pastry Pallet</span><span>Made with flour, butter & love.</span></div>
+</footer>
+
+</body>
+</html>
