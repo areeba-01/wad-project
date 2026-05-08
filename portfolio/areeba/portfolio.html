@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Areeba Naseer — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/jpeg" href="logo_AN_dark.png">
+</head>
+<body>
+
+<div class="orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+</div>
+<div class="noise"></div>
+<div class="grid-bg"></div>
+
+<div id="dot"></div>
+<div id="ring"></div>
+
+<nav id="mainNav">
+  <div class="logo">Areeba.</div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-pill" id="themeToggle">☀ Light</button>
+    <a href="#contact" class="nav-cta">Hire Me</a>
+  </div>
+</nav>
+
+<section id="home" class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-chip"><span class="hero-chip-dot"></span>Available for Internships</div>
+      <h1><span class="line1">Areeba</span><span class="line2">Naseer</span></h1>
+      <p class="hero-role">// <span>CS Student</span> &amp; Aspiring Developer</p>
+      <p class="hero-desc">Building clean code, one project at a time. Passionate about C++, Java, and the craft of software development.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-pink">View My Work</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-glow"></div>
+        <div class="hero-photo-border"></div>
+        <div class="hero-photo-clip">
+          <img src="me.JPG" alt="Areeba Naseer" onerror="this.parentElement.style.background='linear-gradient(160deg,#1a1028,#0d0f1c,#101828)';this.style.display='none'"/>
+        </div>
+        <div class="hero-float float-badge1"><span class="fb-dot"></span><span class="fb-text">Open to Work</span></div>
+        <div class="hero-float float-badge2"><div class="fb-num">4th</div><div class="fb-label">Semester</div></div>
+      </div>
+      <div class="hero-stats">
+        <div class="h-stat"><span class="h-stat-n">4</span><div class="h-stat-l">Projects</div></div>
+        <div class="h-stat"><span class="h-stat-n">4</span><div class="h-stat-l">Languages</div></div>
+        <div class="h-stat"><span class="h-stat-n">3+</span><div class="h-stat-l">Domains</div></div>
+      </div>
+      <div class="terminal">
+        <div class="t-bar"><div class="td" style="background:#ff5f57"></div><div class="td" style="background:#ffbd2e"></div><div class="td" style="background:#28ca42"></div></div>
+        <div class="t-body">
+          <div><span class="tp">const</span> <span class="tk">areeba</span> = {</div>
+          <div>&nbsp;&nbsp;status: <span class="ts">"Sem 4 🎓"</span>,</div>
+          <div>&nbsp;&nbsp;langs: <span class="tv">["C++","Java","HTML","MySQL"]</span>,</div>
+          <div>&nbsp;&nbsp;goal: <span class="ts">"Build & grow ✨"</span>,</div>
+          <div>}; <span class="tc"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <div class="marquee-item">C++ <span class="dot"></span></div>
+    <div class="marquee-item">Java <span class="dot"></span></div>
+    <div class="marquee-item">HTML <span class="dot"></span></div>
+    <div class="marquee-item">CSS <span class="dot"></span></div>
+    <div class="marquee-item">OOP <span class="dot"></span></div>
+    <div class="marquee-item">DSA <span class="dot"></span></div>
+    <div class="marquee-item">Problem Solving <span class="dot"></span></div>
+    <div class="marquee-item">Web Development <span class="dot"></span></div>
+    <div class="marquee-item">C++ <span class="dot"></span></div>
+    <div class="marquee-item">Java <span class="dot"></span></div>
+    <div class="marquee-item">HTML <span class="dot"></span></div>
+    <div class="marquee-item">CSS <span class="dot"></span></div>
+    <div class="marquee-item">OOP <span class="dot"></span></div>
+    <div class="marquee-item">DSA <span class="dot"></span></div>
+    <div class="marquee-item">Problem Solving <span class="dot"></span></div>
+    <div class="marquee-item">Web Development <span class="dot"></span></div>
+  </div>
+</div>
+
+<div class="sec-divider"></div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about" class="sec">
+  <div class="sec-inner">
+    <div class="sec-eyebrow">Who I Am</div>
+    <h2 class="sec-title">About <em>Me</em></h2>
+    <div class="about-wrap">
+      <div class="about-content">
+        <div class="about-text reveal">
+          <p>Hey! I'm <strong>Areeba Naseer</strong>, a Computer Science student currently in my 4th semester, on a journey to turn curiosity into code.</p>
+          <p>I started with the basics — understanding how logic flows, how data structures think, how objects talk to each other — and now I'm building real projects that solve real problems. From simulating airport parking systems to crafting an online bakery, every project has taught me something new.</p>
+          <p>I enjoy the challenge of breaking down complex problems into clean, working solutions. Whether it's writing structured C++ for DSA, designing Java classes for OOP, or building responsive web interfaces, I bring the same energy: <em>learn fast, build with intention, keep improving.</em></p>
+          <p>When I'm not coding, I'm probably exploring new concepts, tinkering with UI ideas, or planning what to build next. I'm actively looking for internship opportunities where I can contribute, grow, and be part of something meaningful.</p>
+        </div>
+        <div class="reveal" style="transition-delay:.15s">
+          <div class="about-highlights">
+            <div class="ah-card"><span class="ah-ico">⚡</span><div class="ah-title">Quick Learner</div><div class="ah-desc">Picking up new languages and frameworks fast — from C++ to Java to Web Dev.</div></div>
+            <div class="ah-card"><span class="ah-ico">🎯</span><div class="ah-title">Problem Solver</div><div class="ah-desc">Love breaking complex problems into clean, structured, working solutions.</div></div>
+            <div class="ah-card"><span class="ah-ico">💡</span><div class="ah-title">Creative Thinker</div><div class="ah-desc">Always looking for unique angles — from project ideas to UI design choices.</div></div>
+            <div class="ah-card"><span class="ah-ico">🤝</span><div class="ah-title">Team Player</div><div class="ah-desc">Collaborative by nature — communicate well and value shared growth.</div></div>
+          </div>
+          <div class="about-tags">
+            <span class="tag-pill">C++</span>
+            <span class="tag-pill">Java</span>
+            <span class="tag-pill">Web Dev</span>
+            <span class="tag-pill">OOP</span>
+            <span class="tag-pill">DSA</span>
+            <span class="tag-pill">Open to Internships</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ══════════ EDUCATION ══════════ -->
+<section id="education" class="sec edu-bg">
+  <div class="sec-inner">
+    <div class="sec-eyebrow">My Journey</div>
+    <h2 class="sec-title">Education & <em>Certifications</em></h2>
+
+    <div class="edu-timeline">
+
+      <!-- 1 — University -->
+      <div class="edu-item reveal">
+        <div class="edu-dot"><div class="edu-dot-inner"></div></div>
+        <div class="edu-card">
+          <div class="edu-top">
+            <div class="edu-degree">Bachelor of Science in Computer Science</div>
+            <span class="edu-date">2023 — 2027 (Expected)</span>
+          </div>
+          <div class="edu-school"><span>University Name</span> — City, Pakistan</div>
+          <p style="font-size:.84rem;color:var(--muted);line-height:1.75;margin-top:.4rem">Pursuing a comprehensive CS degree covering programming fundamentals, data structures, algorithms, object-oriented programming, database management, and web application development. Currently in 4th semester with a strong academic standing.</p>
+          <div class="edu-gpa"><span class="edu-gpa-dot"></span> CGPA: 3.6 / 4.0</div>
+          <div class="edu-details">
+            <span class="edu-detail-tag">Programming Fundamentals</span>
+            <span class="edu-detail-tag">OOP</span>
+            <span class="edu-detail-tag">Data Structures</span>
+            <span class="edu-detail-tag">Algorithms</span>
+            <span class="edu-detail-tag">Database Systems</span>
+            <span class="edu-detail-tag">Web App Development</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 — Intermediate -->
+      <div class="edu-item reveal" style="transition-delay:.12s">
+        <div class="edu-dot"><div class="edu-dot-inner"></div></div>
+        <div class="edu-card">
+          <div class="edu-top">
+            <div class="edu-degree">Intermediate (Pre-Engineering / ICS)</div>
+            <span class="edu-date">2021 — 2023</span>
+          </div>
+          <div class="edu-school"><span>College Name</span> — City, Pakistan</div>
+          <p style="font-size:.84rem;color:var(--muted);line-height:1.75;margin-top:.4rem">Completed intermediate education with a focus on mathematics, physics, and computer science. Built a strong analytical foundation that directly supported the transition into a CS degree.</p>
+          <div class="edu-gpa"><span class="edu-gpa-dot"></span> Marks: 92%</div>
+          <div class="edu-details">
+            <span class="edu-detail-tag">Mathematics</span>
+            <span class="edu-detail-tag">Physics</span>
+            <span class="edu-detail-tag">Computer Science</span>
+            <span class="edu-detail-tag">English</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 — Matriculation -->
+      <div class="edu-item reveal" style="transition-delay:.24s">
+        <div class="edu-dot"><div class="edu-dot-inner"></div></div>
+        <div class="edu-card">
+          <div class="edu-top">
+            <div class="edu-degree">Matriculation (SSC — Science Group)</div>
+            <span class="edu-date">2019 — 2021</span>
+          </div>
+          <div class="edu-school"><span>School Name</span> — City, Pakistan</div>
+          <p style="font-size:.84rem;color:var(--muted);line-height:1.75;margin-top:.4rem">Completed secondary school education in the science group with strong performance across all subjects, particularly in mathematics and science.</p>
+          <div class="edu-gpa"><span class="edu-gpa-dot"></span> Marks: 95%</div>
+          <div class="edu-details">
+            <span class="edu-detail-tag">Science</span>
+            <span class="edu-detail-tag">Mathematics</span>
+            <span class="edu-detail-tag">English</span>
+            <span class="edu-detail-tag">Urdu</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ══════════ SKILLS ══════════ -->
+<section id="skills" class="sec skills-bg">
+  <div class="sec-inner">
+    <div class="sec-eyebrow">What I Know</div>
+    <h2 class="sec-title">What I Work With<span style="color:var(--muted)">.</span></h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal"><div class="skill-icon-wrap">⚡</div><h3>Programming Languages</h3><div class="skill-tags"><span class="skill-tag-pill">C++</span><span class="skill-tag-pill">Python</span><span class="skill-tag-pill">Java</span><span class="skill-tag-pill">C</span></div></div>
+      <div class="skill-card reveal" style="transition-delay:.08s"><div class="skill-icon-wrap">🌐</div><h3>Web Development</h3><div class="skill-tags"><span class="skill-tag-pill">HTML</span><span class="skill-tag-pill">CSS</span><span class="skill-tag-pill">JavaScript</span></div></div>
+      <div class="skill-card reveal" style="transition-delay:.16s"><div class="skill-icon-wrap">🗄️</div><h3>Databases</h3><div class="skill-tags"><span class="skill-tag-pill">SQL</span><span class="skill-tag-pill">MySQL</span></div></div>
+      <div class="skill-card reveal" style="transition-delay:.08s"><div class="skill-icon-wrap">🧠</div><h3>CS Fundamentals</h3><div class="skill-tags"><span class="skill-tag-pill">Data Structures</span><span class="skill-tag-pill">OOP</span><span class="skill-tag-pill">Algorithms</span></div></div>
+      <div class="skill-card reveal" style="transition-delay:.16s"><div class="skill-icon-wrap">🛠️</div><h3>Tools & Platforms</h3><div class="skill-tags"><span class="skill-tag-pill">Git</span><span class="skill-tag-pill">GitHub</span><span class="skill-tag-pill">VS Code</span></div></div>
+      <div class="skill-card reveal" style="transition-delay:.24s"><div class="skill-icon-wrap">💬</div><h3>Soft Skills</h3><div class="skill-tags"><span class="skill-tag-pill">Problem Solving</span><span class="skill-tag-pill">Teamwork</span><span class="skill-tag-pill">Communication</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ══════════ PROJECTS ══════════ -->
+<section id="projects" class="sec">
+  <div class="sec-inner">
+    <div class="sec-eyebrow">What I've Built</div>
+    <h2 class="sec-title">Featured <em>Projects</em></h2>
+    <div class="projects-grid">
+      <div class="proj-card reveal">
+        <div class="proj-header"><span class="proj-num-badge">01 / PF</span></div>
+        <h3>Airport Car Parking System</h3>
+        <p>A programming fundamentals project simulating an airport car parking management system with slot allocation, ticketing, and fee calculation logic.</p>
+        <div class="proj-tags"><span class="proj-tag c1">C++</span><span class="proj-tag">File Handling</span><span class="proj-tag c1">Logic Design</span></div>
+        <a href="#" class="proj-link">View on GitHub</a>
+      </div>
+      <div class="proj-card reveal" style="transition-delay:.1s">
+        <div class="proj-header"><span class="proj-num-badge">02 / OOP</span></div>
+        <h3>Blood Bank System</h3>
+        <p>An object-oriented application to manage blood donor and recipient records, blood group inventory, and donation tracking using core OOP principles.</p>
+        <div class="proj-tags"><span class="proj-tag c2">Java</span><span class="proj-tag">OOP</span><span class="proj-tag c2">Java Swing</span></div>
+        <a href="#" class="proj-link">View on GitHub</a>
+      </div>
+      <div class="proj-card reveal" style="transition-delay:.2s">
+        <div class="proj-header"><span class="proj-num-badge">03 / DSA</span></div>
+        <h3>Sign Language Simulator</h3>
+        <p>A data structures project that maps and traverses sign language gestures using trees and graphs to simulate and translate basic sign language patterns.</p>
+        <div class="proj-tags"><span class="proj-tag c3">C++</span><span class="proj-tag">Trees</span><span class="proj-tag">Graphs</span><span class="proj-tag c3">DSA</span></div>
+        <a href="#" class="proj-link">View on GitHub</a>
+      </div>
+      <div class="proj-card reveal" style="transition-delay:.3s">
+        <div class="proj-header"><span class="proj-num-badge">04 / WAD</span></div>
+        <h3>Online Bakery</h3>
+        <p>A full-stack web application for an online bakery featuring product listings, a shopping cart, order management, and a responsive storefront UI.</p>
+        <div class="proj-tags"><span class="proj-tag c4">HTML</span><span class="proj-tag c4">CSS</span><span class="proj-tag">JavaScript</span></div>
+        <a href="#" class="proj-link">View on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact" class="sec contact-bg">
+  <div class="sec-inner">
+    <div class="sec-eyebrow">Say Hello</div>
+    <h2 class="sec-title">Let's Build <em>Together</em></h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p>I'm always open to interesting conversations, new opportunities, and building cool things. Let's connect!</p>
+        <div class="info-chips">
+          <div class="info-chip"><span class="chip-icon">📧</span><div><span class="chip-key">Email</span><div class="chip-val">areeba@example.com</div></div></div>
+          <div class="info-chip"><span class="chip-icon">📍</span><div><span class="chip-key">Location</span><div class="chip-val">Pakistan</div></div></div>
+          <div class="info-chip"><span class="chip-icon">🎓</span><div><span class="chip-key">Status</span><div class="chip-val">CS Student — Semester 4</div></div></div>
+          <div class="info-chip"><span class="chip-icon">💼</span><div><span class="chip-key">Looking For</span><div class="chip-val">Internship Opportunities</div></div></div>
+        </div>
+      </div>
+      <div class="social-col reveal" style="transition-delay:.15s">
+        <p>Find me on these platforms — I'd love to connect, collaborate, or just chat about code!</p>
+        <a href="https://github.com/" target="_blank" class="soc-btn gh">
+          <div class="soc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></div>
+          <div class="soc-text"><div class="soc-name">GitHub</div><div class="soc-sub">github.com/areeba</div></div>
+          <span class="soc-arr">→</span>
+        </a>
+        <a href="mailto:areeba@example.com" class="soc-btn em">
+          <div class="soc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+          <div class="soc-text"><div class="soc-name">Email Me</div><div class="soc-sub">areeba@example.com</div></div>
+          <span class="soc-arr">→</span>
+        </a>
+        <a href="https://linkedin.com/" target="_blank" class="soc-btn li">
+          <div class="soc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div class="soc-text"><div class="soc-name">LinkedIn</div><div class="soc-sub">linkedin.com/in/areeba</div></div>
+          <span class="soc-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Areeba.</div>
+  <div class="footer-copy">© 2025 Areeba Naseer — Coded with ❤️ & ☕</div>
+  <div class="footer-links">
+    <a href="https://github.com/" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/" target="_blank">LinkedIn</a>
+    <a href="mailto:areeba@example.com">Email</a>
+  </div>
+</footer>
+
+<button class="fab" id="fabBtn" title="Scroll to top">
+  <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script>
+  const dot=document.getElementById('dot'),ring=document.getElementById('ring');
+  let mx=-100,my=-100,rx=-100,ry=-100;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+  (function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+  const nav=document.getElementById('mainNav');
+  window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+  const btn=document.getElementById('themeToggle');
+  btn.addEventListener('click',()=>{document.body.classList.toggle('light');btn.textContent=document.body.classList.contains('light')?'☾ Dark':'☀ Light'});
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+  const orbs=document.querySelectorAll('.orb');
+  document.addEventListener('mousemove',e=>{const cx=(e.clientX/window.innerWidth-.5)*2,cy=(e.clientY/window.innerHeight-.5)*2;orbs.forEach((o,i)=>{const f=(i+1)*8;o.style.transform=`translate(${cx*f}px,${cy*f}px)`})});
+  document.getElementById('fabBtn').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
+</script>
+</body>
+</html>
