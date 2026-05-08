@@ -321,4 +321,687 @@
 </footer>
 
 </body>
+
+<script>
+  // ===== CONFIG =====
+  var API = 'api/'; // Path to your PHP folder
+
+  // ===== STATE =====
+  var menuItems = [];
+  var cart = [];
+  var currentUser = null;
+  var isAdmin = false;
+  var currentTab = 'all';
+  var allUserOrders = [];
+  var currentOrderFilter = 'all';
+  var currentAdminTab = 'orders';
+
+  // Load cart from local storage safely
+  var savedCart = localStorage.getItem('cart');
+  if (savedCart) {
+    cart = JSON.parse(savedCart);
+  } else {
+    cart = [];
+  }
+
+  // ===== INIT =====
+  document.addEventListener('DOMContentLoaded', async function() {
+    await checkAuth();
+    loadMenu();
+    updateCartBadge();
+    loadTeam(); 
+  });
+
+  // ===== API HELPERS =====
+  // We still use async/await because talking to a database requires it,
+  // but the structure is simplified.
+  async function api(file, data) {
+    try {
+      var response = await fetch(API + file, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      var result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("API Error:", error);
+      return { success: false, message: "Connection error" };
+    }
+  }
+
+  async function getApi(file) {
+    try {
+      var response = await fetch(API + file);
+      var result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("API Error:", error);
+      return [];
+    }
+  }
+
+  // ===== AUTH FUNCTIONS =====
+  async function checkAuth() {
+    var res = await getApi('auth.php?action=check');
+    if (res.loggedIn) {
+      currentUser = res.user;
+      isAdmin = res.user.is_admin;
+      updateNav(true);
+      if (isAdmin) {
+        document.getElementById('navAdminLink').style.display = 'block';
+      }
+    } else {
+      updateNav(false);
+    }
+  }
+
+  function updateNav(loggedIn) {
+    if (loggedIn) {
+      document.getElementById('navAuth').style.display = 'none';
+      document.getElementById('navUser').style.display = 'flex';
+      document.getElementById('navDashLink').style.display = isAdmin ? 'none' : 'block';
+      document.getElementById('userChip').textContent = currentUser.username;
+    } else {
+      document.getElementById('navAuth').style.display = 'flex';
+      document.getElementById('navUser').style.display = 'none';
+      document.getElementById('navDashLink').style.display = 'none';
+    }
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    var identifier = document.getElementById('loginIdentifier').value;
+    var password = document.getElementById('loginPassword').value;
+    var res = await api('auth.php?action=login', { identifier: identifier, password: password });
+    
+    if (res.success) {
+      showToast("Welcome back!");
+      checkAuth();
+      showPage('home');
+    } else {
+      document.getElementById('loginErr').innerText = res.message;
+      document.getElementById('loginErr').classList.add('show');
+    }
+  }
+
+  async function handleSignup(e) {
+    e.preventDefault();
+    var username = document.getElementById('signupUsername').value;
+    var email = document.getElementById('signupEmail').value;
+    var password = document.getElementById('signupPassword').value;
+    var confirm = document.getElementById('signupConfirm').value;
+
+    if (password !== confirm) {
+      document.getElementById('signupConfirmErr').innerText = "Passwords do not match";
+      return;
+    }
+
+    var res = await api('auth.php?action=signup', { username: username, email: email, password: password });
+    if (res.success) {
+      currentUser = res.user;
+      isAdmin = res.user.is_admin;
+      updateNav(true);
+      showToast("Welcome, " + username + "! Account created 🎉");
+      showPage('home');
+    } else {
+      document.getElementById('signupErr').innerText = res.message;
+      document.getElementById('signupErr').classList.add('show');
+    }
+  }
+
+  async function logout() {
+    await getApi('auth.php?action=logout');
+    currentUser = null;
+    isAdmin = false;
+    updateNav(false);
+    document.getElementById('navAdminLink').style.display = 'none';
+    showToast("Logged out");
+    showPage('home');
+  }
+
+  // ===== MENU FUNCTIONS =====
+  async function loadMenu() {
+    menuItems = await getApi('menu.php');
+    renderMenu();
+    renderHomeFeatured();
+  }
+
+  function renderHomeFeatured() {
+    var container = document.getElementById('homeFeatured');
+    var htmlString = '';
+    var highlights = ['croissant', 'gulab cake', 'biscoff cupcake'];
+    var featured = [];
+
+    // Find items matching the highlight names (case-insensitive)
+    for (var h = 0; h < highlights.length; h++) {
+      for (var i = 0; i < menuItems.length; i++) {
+        if (menuItems[i].name.toLowerCase().indexOf(highlights[h]) !== -1) {
+          featured.push(menuItems[i]);
+          break;
+        }
+      }
+    }
+
+    // Fallback: if fewer than 3 matched, fill remaining from top of menu
+    if (featured.length < 3) {
+      for (var i = 0; i < menuItems.length && featured.length < 3; i++) {
+        var alreadyAdded = false;
+        for (var j = 0; j < featured.length; j++) {
+          if (featured[j].id === menuItems[i].id) { alreadyAdded = true; break; }
+        }
+        if (!alreadyAdded) { featured.push(menuItems[i]); }
+      }
+    }
+
+    for (var i = 0; i < featured.length; i++) {
+      htmlString = htmlString + renderMenuCard(featured[i]);
+    }
+    container.innerHTML = htmlString;
+  }
+
+  function renderMenu(filter, search) {
+    if (!filter) { filter = 'all'; }
+    if (!search) { search = ''; }
+
+    var container = document.getElementById('menuGrid');
+    var filteredItems = [];
+
+    // Filtering logic using standard for loop
+    for (var i = 0; i < menuItems.length; i++) {
+      var item = menuItems[i];
+      var matchesFilter = (filter === 'all' || item.category === filter);
+      var matchesSearch = (search === '' || item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+
+      if (matchesFilter && matchesSearch) {
+        filteredItems.push(item);
+      }
+    }
+
+    if (filteredItems.length === 0) {
+      container.innerHTML = '<p style="grid-column:1/-1;text-align:center">No items found.</p>';
+      return;
+    }
+
+    var htmlString = '';
+    for (var i = 0; i < filteredItems.length; i++) {
+      htmlString = htmlString + renderMenuCard(filteredItems[i]);
+    }
+    container.innerHTML = htmlString;
+  }
+
+  function renderMenuCard(item) {
+    var inCart = null;
+    // Find item in cart using standard for loop
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id == item.id) {
+        inCart = cart[i];
+        break;
+      }
+    }
+
+    var buttonText = '+';
+    if (inCart) {
+      buttonText = '✓';
+    }
+
+    var badgeHtml = '';
+    if (item.badge) {
+      var badgeClass = 'new';
+      if (item.badge === 'bestseller') {
+        badgeClass = 'best';
+      }
+      badgeHtml = '<span class="card-badge badge-' + badgeClass + '">' + item.badge + '</span>';
+    }
+
+    var price = parseFloat(item.price).toFixed(2);
+    var imageUrl = item.image_url;
+    if (!imageUrl) {
+      imageUrl = 'logo.jpeg';
+    }
+
+    // Building HTML using string concatenation instead of template literals
+    var cardHtml = '<div class="menu-card">' +
+      '<div class="card-img">' +
+        '<img src="' + imageUrl + '" alt="' + item.name + '">' +
+      '</div>' +
+      '<div class="card-body">' +
+        badgeHtml +
+        '<h3>' + item.name + '</h3>' +
+        '<p>' + item.description + '</p>' +
+        '<div class="card-footer">' +
+          '<span class="card-price">Rs ' + price + '</span>' +
+          '<button class="add-btn" onclick="addToCart(' + item.id + ')" title="Add to cart">' +
+            buttonText +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+    return cardHtml;
+  }
+
+  function filterMenu() {
+    var search = document.getElementById('menuSearch').value;
+    renderMenu(currentTab, search);
+  }
+
+  function setTab(tab, el) {
+    currentTab = tab;
+    var tabs = document.querySelectorAll('#menuTabs .tab');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active');
+    }
+    el.classList.add('active');
+    filterMenu();
+  }
+
+  // ===== CART FUNCTIONS =====
+  function addToCart(id) {
+    var item = null;
+    for (var i = 0; i < menuItems.length; i++) {
+      if (menuItems[i].id == id) {
+        item = menuItems[i];
+        break;
+      }
+    }
+
+    var existing = null;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id == id) {
+        existing = cart[i];
+        break;
+      }
+    }
+
+    if (existing) {
+      existing.qty = existing.qty + 1;
+    } else {
+      // Explicitly creating the object instead of using the spread operator (...)
+      var newItem = {
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image_url: item.image_url,
+        description: item.description,
+        badge: item.badge,
+        category: item.category,
+        qty: 1
+      };
+      cart.push(newItem);
+    }
+    
+    saveCart();
+    showToast(item.name + ' added to cart');
+    renderMenu(); 
+    renderHomeFeatured();
+  }
+
+  function updateQty(id, delta) {
+    var newCart = [];
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id == id) {
+        cart[i].qty = cart[i].qty + delta;
+      }
+      if (cart[i].qty > 0) {
+        newCart.push(cart[i]);
+      }
+    }
+    cart = newCart;
+    saveCart();
+    renderCart();
+  }
+
+  function removeItem(id) {
+    var newCart = [];
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id != id) {
+        newCart.push(cart[i]);
+      }
+    }
+    cart = newCart;
+    saveCart();
+    renderCart();
+    renderMenu();
+  }
+
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadge();
+  }
+
+  function updateCartBadge() {
+    var count = 0;
+    for (var i = 0; i < cart.length; i++) {
+      count = count + cart[i].qty;
+    }
+    document.getElementById('cartBadge').textContent = count;
+  }
+
+  function renderCart() {
+    var itemsContainer = document.getElementById('cartItems');
+    var summaryContainer = document.getElementById('cartSummary');
+
+    if (cart.length === 0) {
+      itemsContainer.innerHTML = '<div class="empty-cart">' +
+        '<span>🛒</span>' +
+        '<p>Your cart is empty.</p>' +
+        '<button class="btn-primary" onclick="showPage(\'menu\')">Browse Menu</button>' +
+      '</div>';
+      summaryContainer.innerHTML = '';
+      return;
+    }
+
+    var itemsHtml = '';
+    for (var i = 0; i < cart.length; i++) {
+      var item = cart[i];
+      var itemTotal = (item.price * item.qty).toFixed(2);
+      
+      itemsHtml = itemsHtml + '<div class="cart-item">' +
+        '<div class="cart-item-info">' +
+          '<h4>' + item.name + '</h4>' +
+          '<span>Rs ' + parseFloat(item.price).toFixed(2) + '</span>' +
+        '</div>' +
+        '<div class="cart-qty">' +
+          '<button class="qty-btn" onclick="updateQty(' + item.id + ', -1)">−</button>' +
+          '<span class="qty-num">' + item.qty + '</span>' +
+          '<button class="qty-btn" onclick="updateQty(' + item.id + ', 1)">+</button>' +
+        '</div>' +
+        '<div class="cart-item-price">Rs ' + itemTotal + '</div>' +
+        '<button class="remove-btn" onclick="removeItem(' + item.id + ')">🗑</button>' +
+      '</div>';
+    }
+    itemsContainer.innerHTML = itemsHtml;
+
+    var total = 0;
+    for (var i = 0; i < cart.length; i++) {
+      total = total + (cart[i].price * cart[i].qty);
+    }
+
+    summaryContainer.innerHTML = '<h3>Summary</h3>' +
+      '<div class="summary-row"><span>Subtotal</span><span>Rs ' + total.toFixed(2) + '</span></div>' +
+      '<div class="summary-row"><span>Delivery</span><span>Free</span></div>' +
+      '<div class="summary-total"><span>Total</span><span>Rs ' + total.toFixed(2) + '</span></div>' +
+      '<form class="checkout-form" onsubmit="handleCheckout(event)">' +
+        '<div class="form-group">' +
+          '<label>Delivery Address</label>' +
+          '<textarea id="checkoutAddress" required placeholder="Street, City..."></textarea>' +
+        '</div>' +
+        '<div class="form-group">' +
+          '<label>Phone</label>' +
+          '<input type="tel" id="checkoutPhone" required placeholder="+92 3XX...">' +
+        '</div>' +
+        '<button type="submit" class="btn-primary full">Place Order</button>' +
+      '</form>';
+  }
+
+  async function handleCheckout(e) {
+    e.preventDefault();
+    
+    if (!currentUser) {
+      showToast("Please login to checkout");
+      showPage('login');
+      return;
+    }
+
+    var address = document.getElementById('checkoutAddress').value;
+    var phone = document.getElementById('checkoutPhone').value;
+    var total = 0;
+    
+    var items = [];
+    for (var i = 0; i < cart.length; i++) {
+      total = total + (cart[i].price * cart[i].qty);
+      items.push({ id: cart[i].id, qty: cart[i].qty });
+    }
+
+    var res = await api('orders.php', { items: items, total: total, address: address, phone: phone });
+
+    if (res.success) {
+      cart = [];
+      saveCart();
+      document.getElementById('orderRef').textContent = "Order #" + res.orderId;
+      showPage('success');
+    } else {
+      showToast(res.message || "Checkout failed");
+    }
+  }
+
+  // ===== ORDERS / DASHBOARD =====
+  async function loadUserOrders() {
+    var container = document.getElementById('ordersList');
+    var orders = await getApi('orders.php');
+    allUserOrders = orders;
+    currentOrderFilter = 'all';
+
+    // reset active tab UI
+    var tabs = document.querySelectorAll('.filter-tabs .tab');
+    for (var t = 0; t < tabs.length; t++) {
+      tabs[t].classList.remove('active');
+    }
+    var firstTab = document.querySelector('.filter-tabs .tab');
+    if (firstTab) firstTab.classList.add('active');
+
+    renderUserOrders();
+  }
+
+  function renderUserOrders() {
+    var container = document.getElementById('ordersList');
+    var search = (document.getElementById('orderSearch') ? document.getElementById('orderSearch').value.toLowerCase() : '');
+
+    var filtered = [];
+    for (var i = 0; i < allUserOrders.length; i++) {
+      var o = allUserOrders[i];
+      var matchesFilter = (currentOrderFilter === 'all' || o.status === currentOrderFilter);
+      var matchesSearch = (search === '' || o.items_list.toLowerCase().indexOf(search) !== -1 || String(o.id).indexOf(search) !== -1);
+      if (matchesFilter && matchesSearch) {
+        filtered.push(o);
+      }
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:var(--text-light)">No orders found.</p>';
+      return;
+    }
+
+    var htmlString = '';
+    for (var j = 0; j < filtered.length; j++) {
+      var ord = filtered[j];
+      var orderDate = new Date(ord.created_at).toLocaleDateString();
+      htmlString = htmlString + '<div class="order-card">' +
+        '<div class="order-card-header">' +
+          '<span class="order-id">Order #' + ord.id + '</span>' +
+          '<span class="order-status status-' + ord.status + '">' + ord.status.toUpperCase() + '</span>' +
+        '</div>' +
+        '<div class="order-items-list">' + ord.items_list + '</div>' +
+        '<div class="order-footer">' +
+          '<span class="order-total">Rs ' + parseFloat(ord.total_amount).toFixed(2) + '</span>' +
+          '<span class="order-date">' + orderDate + '</span>' +
+        '</div>' +
+      '</div>';
+    }
+    container.innerHTML = htmlString;
+  }
+
+  function setOrderFilter(filter, el) {
+    currentOrderFilter = filter;
+    var tabs = document.querySelectorAll('.filter-tabs .tab');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active');
+    }
+    if (el) el.classList.add('active');
+    renderUserOrders();
+  }
+
+  function filterOrders() {
+    renderUserOrders();
+  }
+
+  // ===== ADMIN =====
+  async function loadAdmin(tab) {
+    var container = document.getElementById('adminContent');
+    
+    if (tab === 'orders') {
+      var orders = await getApi('admin.php');
+      
+      var tableRows = '';
+      for (var i = 0; i < orders.length; i++) {
+        var o = orders[i];
+        var orderDate = new Date(o.created_at).toLocaleDateString();
+        
+        var selectedPending = (o.status === 'pending') ? 'selected' : '';
+        var selectedConfirmed = (o.status === 'confirmed') ? 'selected' : '';
+        var selectedDelivered = (o.status === 'delivered') ? 'selected' : '';
+
+        tableRows = tableRows + '<tr>' +
+          '<td>#' + o.id + '</td>' +
+          '<td>' + o.username + '</td>' +
+          '<td>Rs ' + parseFloat(o.total_amount).toFixed(2) + '</td>' +
+          '<td><span class="order-status status-' + o.status + '">' + o.status + '</span></td>' +
+          '<td>' + orderDate + '</td>' +
+          '<td>' +
+            '<select class="admin-status-select" onchange="updateOrderStatus(' + o.id + ', this.value)">' +
+              '<option value="pending" ' + selectedPending + '>Pending</option>' +
+              '<option value="confirmed" ' + selectedConfirmed + '>Confirmed</option>' +
+              '<option value="delivered" ' + selectedDelivered + '>Delivered</option>' +
+            '</select>' +
+          '</td>' +
+        '</tr>';
+      }
+
+      container.innerHTML = '<table class="admin-table">' +
+        '<thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>' +
+        '<tbody>' + tableRows + '</tbody>' +
+      '</table>';
+
+    } else {
+      container.innerHTML = '<p>User management section coming soon.</p>';
+    }
+  }
+
+  async function updateOrderStatus(id, status) {
+    var res = await api('admin.php', { id: id, status: status });
+    if (res.success) {
+      showToast("Order updated");
+    }
+  }
+
+  function setAdminTab(tab, el) {
+    currentAdminTab = tab;
+    var tabs = document.querySelectorAll('.admin-tabs .tab');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active');
+    }
+    el.classList.add('active');
+    loadAdmin(tab);
+  }
+
+  // ===== NAVIGATION & UI =====
+  function showPage(pageId) {
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].classList.remove('active');
+    }
+    document.getElementById('page-' + pageId).classList.add('active');
+    window.scrollTo(0, 0);
+    
+    // Close mobile menu if open
+    document.getElementById('navLinks').classList.remove('mobile-open');
+
+    // Specific page loads
+    if (pageId === 'menu') { renderMenu(); }
+    if (pageId === 'cart') { renderCart(); }
+    if (pageId === 'dashboard') { loadUserOrders(); }
+    if (pageId === 'admin') { loadAdmin(currentAdminTab); }
+  }
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('mobile-open');
+  }
+
+  (function() {
+  var saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    var btn = document.getElementById('darkToggle');
+    if (btn) btn.textContent = '☀️';
+  }
+})();
+
+  function toggleDark() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.getElementById('darkToggle').textContent = '🌙';
+      localStorage.setItem('theme', 'light')
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.getElementById('darkToggle').textContent = '☀️';
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  function togglePw(id, btn) {
+    var input = document.getElementById(id);
+    if (input.getAttribute('type') === 'password') {
+      input.setAttribute('type', 'text');
+      btn.textContent = '🙈';
+    } else {
+      input.setAttribute('type', 'password');
+      btn.textContent = '👁';
+    }
+  }
+
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  function loadTeam() {
+    var grid = document.getElementById('teamGrid');
+    if (!grid) { return; }
+
+    var team = [
+      { name: "Areeba Naseer", role: "Baker", emoji: "👩‍🍳", desc: "The soul behind every recipe.", portfolio: "portfolio/areeba/portfolio.html" },
+      { name: "Amna Kashif", role: "Pastry Chef", emoji: "👩‍🍳", desc: "Master of eclairs and tarts.", portfolio: "portfolio/amna/project.html" }
+    ];
+    
+    var htmlString = '';
+    for (var i = 0; i < team.length; i++) {
+      var m = team[i];
+      htmlString = htmlString + '<a href="' + m.portfolio + '" target="_blank" class="team-card" style="display:block;text-decoration:none;cursor:pointer;">' +
+        '<div class="team-avatar">' + m.emoji + '</div>' +
+        '<h3>' + m.name + '</h3>' +
+        '<span class="role">' + m.role + '</span>' +
+        '<p>' + m.desc + '</p>' +
+        '<span style="display:inline-block;margin-top:12px;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--terracotta);">View Portfolio →</span>' +
+      '</a>';
+    }
+    grid.innerHTML = htmlString;
+  }
+
+  // Confirm Dialog (Generic)
+  function showConfirm(title, msg, onConfirm) {
+    document.getElementById('confirmTitle').innerText = title;
+    document.getElementById('confirmMsg').innerText = msg;
+    document.getElementById('confirmOk').onclick = function() {
+      onConfirm(); 
+      cancelConfirm();
+    };
+    document.getElementById('confirmDialog').classList.add('open');
+  }
+
+  function cancelConfirm() {
+    document.getElementById('confirmDialog').classList.remove('open');
+  }
+
+  function closeModal(e) { 
+    if (e.target.classList.contains('modal-overlay')) {
+      document.getElementById('modal').classList.remove('open');
+    }
+  }
+</script>
 </html>
